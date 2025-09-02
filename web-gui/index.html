@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 DeskAgent v1.0</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Top Navigation Bar -->
+        <header class="top-bar">
+            <div class="app-title">
+                <h1>🤖 DeskAgent v1.0</h1>
+            </div>
+            <nav class="view-tabs">
+                <button class="tab-btn active" data-view="dashboard">📊 Dashboard</button>
+                <button class="tab-btn" data-view="sprint">📋 Sprint</button>
+                <button class="tab-btn" data-view="review">🔍 Review</button>
+                <button class="tab-btn" data-view="files">📁 Files</button>
+            </nav>
+            <div class="top-actions">
+                <span class="repo-info">📁 deskagent (main)</span>
+                <button class="action-btn">🔄 Refresh</button>
+                <button class="action-btn">⚙️ Settings</button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view active">
+                <div class="dashboard-grid">
+                    <!-- Repository Info -->
+                    <section class="card repo-card">
+                        <h2>🏠 Repository Status</h2>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>Repository:</strong>
+                                <span>deskagent v1.0</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Branch:</strong>
+                                <span>main</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Tasks:</strong>
+                                <span>12 total • <span class="success">8 done</span> • <span class="pending">3 pending</span> • <span class="error">1 failed</span></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Progress Section -->
+                    <section class="card progress-card">
+                        <h2>📈 Sprint Progress</h2>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <div class="progress-text">75%</div>
+                        </div>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <strong>Last Review:</strong>
+                                <span class="success">✅ PASS</span>
+                            </div>
+                            <div class="status-item">
+                                <strong>Risks:</strong>
+                                <span>🟢 2 Low • 🟡 1 Medium • 🔴 0 High</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Recent Activity -->
+                    <section class="card activity-card">
+                        <h2>🔔 Recent Activity</h2>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span class="activity-time">15:42</span>
+                                <span class="activity-status success">✅</span>
+                                <span class="activity-text">M5 Workflow Integration</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-time">14:23</span>
+                                <span class="activity-status success">✅</span>
+                                <span class="activity-text">M4 TUI Dashboard</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-time">13:15</span>
+                                <span class="activity-status success">✅</span>
+                                <span class="activity-text">M3 LLM Router</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-time">12:01</span>
+                                <span class="activity-status success">✅</span>
+                                <span class="activity-text">M2 Desktop Control</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Actions -->
+                    <section class="card actions-card">
+                        <h2>⚡ Quick Actions</h2>
+                        <div class="action-grid">
+                            <button class="action-btn-large" data-action="plan">📋 [P] Plan</button>
+                            <button class="action-btn-large" data-action="review">🔍 [R] Review</button>
+                            <button class="action-btn-large" data-action="status">📊 [S] Status</button>
+                            <button class="action-btn-large" data-action="follow">🔄 [F] Follow</button>
+                            <button class="action-btn-large" data-action="apply">🛠️ [A] Apply</button>
+                            <button class="action-btn-large" data-action="notify">📢 [N] Notify</button>
+                            <button class="action-btn-large" data-action="terminal">💻 Terminal</button>
+                            <button class="action-btn-large" data-action="logs">📄 View Logs</button>
+                        </div>
+                    </section>
+
+                    <!-- Real-time Log Console -->
+                    <section class="card log-console-card" id="log-console">
+                        <div class="console-header">
+                            <h2>💻 Console</h2>
+                            <div class="console-controls">
+                                <button class="console-btn" data-action="clear-logs">🗑️ Clear</button>
+                                <button class="console-btn" data-action="scroll-to-bottom">⬇️ Bottom</button>
+                                <label class="console-toggle">
+                                    <input type="checkbox" id="auto-scroll" checked>
+                                    Auto-scroll
+                                </label>
+                            </div>
+                        </div>
+                        <div class="console-output" id="console-output">
+                            <div class="log-entry info">
+                                <span class="log-time">02:47:30</span>
+                                <span class="log-level">INFO</span>
+                                <span class="log-message">🚀 DeskAgent Web GUI loaded successfully</span>
+                            </div>
+                            <div class="log-entry success">
+                                <span class="log-time">02:47:31</span>
+                                <span class="log-level">SUCCESS</span>
+                                <span class="log-message">✅ Application state loaded</span>
+                            </div>
+                        </div>
+                        <div class="console-input-area">
+                            <input type="text" id="console-input" placeholder="Type command and press Enter..." />
+                            <button class="console-send" data-action="send-command">▶️</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Sprint Panel View -->
+            <div id="sprint-view" class="view">
+                <div class="sprint-content">
+                    <section class="card sprint-header">
+                        <h2>📋 Sprint: sprint-01</h2>
+                        <div class="sprint-stats">
+                            <span class="stat">总计: 12 任务</span>
+                            <span class="stat success">完成: 8</span>
+                            <span class="stat pending">进行中: 3</span>
+                            <span class="stat error">失败: 1</span>
+                        </div>
+                    </section>
+
+                    <section class="card task-tree">
+                        <h3>📦 任务树</h3>
+                        <div class="tree">
+                            <div class="tree-item">
+                                <span class="tree-toggle">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-text">M1: 核心架构</span>
+                                <span class="status-badge success">完成</span>
+                            </div>
+                            <div class="tree-item">
+                                <span class="tree-toggle">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-text">M2: 桌面控制</span>
+                                <span class="status-badge success">完成</span>
+                            </div>
+                            <div class="tree-item">
+                                <span class="tree-toggle">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-text">M3: LLM 路由</span>
+                                <span class="status-badge success">完成</span>
+                            </div>
+                            <div class="tree-item">
+                                <span class="tree-toggle">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-text">M4: TUI 界面</span>
+                                <span class="status-badge success">完成</span>
+                            </div>
+                            <div class="tree-item">
+                                <span class="tree-toggle">▼</span>
+                                <span class="tree-icon">📁</span>
+                                <span class="tree-text">M5: 工作流集成</span>
+                                <span class="status-badge progress">进行中</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Review Workspace View -->
+            <div id="review-view" class="view">
+                <div class="review-content">
+                    <section class="card review-header">
+                        <h2>🔍 Review: sprint-01-review</h2>
+                        <div class="review-stats">
+                            <span class="stat">Status: <span class="success">✅ Approved</span></span>
+                            <span class="stat">Quality: <span class="success">92/100</span></span>
+                            <span class="stat">Reviewer: AI Agent</span>
+                            <span class="stat">Time: 2025-09-02</span>
+                        </div>
+                    </section>
+
+                    <section class="card file-changes">
+                        <h3>📁 File Changes (5 files modified)</h3>
+                        <div class="file-table">
+                            <div class="file-header">
+                                <span>File</span>
+                                <span>+/-</span>
+                                <span>Risk</span>
+                                <span>Issues</span>
+                            </div>
+                            <div class="file-row">
+                                <span>src/orchestrator/</span>
+                                <span>+45</span>
+                                <span class="risk medium">🟡</span>
+                                <span>Complex state logic</span>
+                            </div>
+                            <div class="file-row">
+                                <span>src/desktop/cursor</span>
+                                <span>+32</span>
+                                <span class="risk high">🔴</span>
+                                <span>AppleScript safety</span>
+                            </div>
+                            <div class="file-row">
+                                <span>src/llm/router.rs</span>
+                                <span>+28</span>
+                                <span class="risk low">🟢</span>
+                                <span>Clean implementation</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card analysis-summary">
+                        <h3>📊 Analysis Summary</h3>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <span class="analysis-category">Architecture:</span>
+                                <span class="analysis-status success">✅</span>
+                                <span class="analysis-desc">Clean modular design</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-category">Error Handling:</span>
+                                <span class="analysis-status success">✅</span>
+                                <span class="analysis-desc">Comprehensive Result patterns</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-category">Testing:</span>
+                                <span class="analysis-status success">✅</span>
+                                <span class="analysis-desc">98.4% coverage</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-category">Performance:</span>
+                                <span class="analysis-status warning">⚠️</span>
+                                <span class="analysis-desc">Some blocking I/O</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card recommendations">
+                        <h3>💡 Recommendations</h3>
+                        <div class="recommendation-list">
+                            <div class="recommendation-item">
+                                <span class="rec-number">1.</span>
+                                <span class="rec-text">Move API key management to secure storage</span>
+                                <button class="rec-action">📋 Copy</button>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="rec-number">2.</span>
+                                <span class="rec-text">Replace blocking I/O with async alternatives</span>
+                                <button class="rec-action">📋 Copy</button>
+                            </div>
+                            <div class="recommendation-item">
+                                <span class="rec-number">3.</span>
+                                <span class="rec-text">Add input validation for AppleScript commands</span>
+                                <button class="rec-action">📋 Copy</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card review-actions">
+                        <h3>🎬 Actions</h3>
+                        <div class="action-grid">
+                            <button class="action-btn-large success" data-action="approve">✅ Approve</button>
+                            <button class="action-btn-large error" data-action="request-changes">❌ Request Changes</button>
+                            <button class="action-btn-large" data-action="export">📄 Export Report</button>
+                            <button class="action-btn-large" data-action="view-diff">🔍 View Diff</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- File Browser View -->
+            <div id="files-view" class="view">
+                <div class="files-content">
+                    <section class="card file-browser">
+                        <div class="browser-header">
+                            <h2>📁 File Browser</h2>
+                            <div class="browser-controls">
+                                <button class="browser-btn" data-action="refresh-files">🔄 Refresh</button>
+                                <button class="browser-btn" data-action="new-file">📄 New File</button>
+                                <button class="browser-btn" data-action="new-folder">📁 New Folder</button>
+                            </div>
+                        </div>
+                        <div class="file-explorer">
+                            <div class="file-item folder" data-path="src">
+                                <span class="file-icon">📁</span>
+                                <span class="file-name">src/</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="open">📖</button>
+                                    <button class="file-action" data-action="edit">✏️</button>
+                                    <button class="file-action" data-action="delete">🗑️</button>
+                                </span>
+                            </div>
+                            <div class="file-item folder expanded" data-path="src/gui">
+                                <span class="file-icon">📁</span>
+                                <span class="file-name">  ├─ gui/</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="open">📖</button>
+                                </span>
+                            </div>
+                            <div class="file-item file" data-path="src/gui/mod.rs">
+                                <span class="file-icon">📄</span>
+                                <span class="file-name">    ├─ mod.rs</span>
+                                <span class="file-size">2.1KB</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="edit">✏️</button>
+                                    <button class="file-action" data-action="view">👁️</button>
+                                </span>
+                            </div>
+                            <div class="file-item file" data-path="src/gui/app.rs">
+                                <span class="file-icon">🦀</span>
+                                <span class="file-name">    ├─ app.rs</span>
+                                <span class="file-size">4.8KB</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="edit">✏️</button>
+                                    <button class="file-action" data-action="view">👁️</button>
+                                </span>
+                            </div>
+                            <div class="file-item file" data-path="Cargo.toml">
+                                <span class="file-icon">⚙️</span>
+                                <span class="file-name">Cargo.toml</span>
+                                <span class="file-size">1.2KB</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="edit">✏️</button>
+                                    <button class="file-action" data-action="view">👁️</button>
+                                </span>
+                            </div>
+                            <div class="file-item file" data-path="README.md">
+                                <span class="file-icon">📖</span>
+                                <span class="file-name">README.md</span>
+                                <span class="file-size">8.7KB</span>
+                                <span class="file-actions">
+                                    <button class="file-action" data-action="edit">✏️</button>
+                                    <button class="file-action" data-action="view">👁️</button>
+                                    <button class="file-action" data-action="preview">🔍</button>
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- File Content Viewer -->
+                    <section class="card file-viewer" id="file-viewer" style="display: none;">
+                        <div class="viewer-header">
+                            <h3 id="viewer-title">📄 File Content</h3>
+                            <div class="viewer-controls">
+                                <button class="viewer-btn" data-action="close-viewer">✖️</button>
+                            </div>
+                        </div>
+                        <div class="file-content">
+                            <pre id="file-content-display"><code>Select a file to view its content...</code></pre>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚙️ Settings</h2>
+                    <button class="modal-close" data-action="close-settings">✖️</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>🎨 Appearance</h3>
+                        <div class="setting-item">
+                            <label for="theme-select">Theme:</label>
+                            <select id="theme-select">
+                                <option value="auto">🌓 Auto</option>
+                                <option value="light">☀️ Light</option>
+                                <option value="dark">🌙 Dark</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="font-size">Font Size:</label>
+                            <input type="range" id="font-size" min="12" max="20" value="14">
+                            <span id="font-size-value">14px</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>🔄 Auto Refresh</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-refresh" checked>
+                                Enable auto-refresh
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label for="refresh-interval">Refresh Interval:</label>
+                            <select id="refresh-interval">
+                                <option value="5">5 seconds</option>
+                                <option value="10">10 seconds</option>
+                                <option value="30" selected>30 seconds</option>
+                                <option value="60">1 minute</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>🔔 Notifications</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="desktop-notifications" checked>
+                                Enable desktop notifications
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="sound-alerts">
+                                Enable sound alerts
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>⌨️ Keyboard Shortcuts</h3>
+                        <div class="shortcuts-list">
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">P</span>
+                                <span class="shortcut-desc">Plan workflow</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">R</span>
+                                <span class="shortcut-desc">Review workspace</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">S</span>
+                                <span class="shortcut-desc">Status report</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">1-3</span>
+                                <span class="shortcut-desc">Switch views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn" data-action="reset-settings">🔄 Reset</button>
+                    <button class="modal-btn primary" data-action="save-settings">💾 Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

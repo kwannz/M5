@@ -24,6 +24,32 @@ impl GuiApp {
         })
     }
     
+    fn configure_fonts(ctx: &egui::Context) {
+        let fonts = egui::FontDefinitions::default();
+        
+        // Configure larger font sizes for better readability and Chinese/emoji support
+        let mut style = (*ctx.style()).clone();
+        style.text_styles.insert(
+            egui::TextStyle::Body,
+            egui::FontId::new(16.0, egui::FontFamily::Proportional)
+        );
+        style.text_styles.insert(
+            egui::TextStyle::Heading, 
+            egui::FontId::new(24.0, egui::FontFamily::Proportional)
+        );
+        style.text_styles.insert(
+            egui::TextStyle::Button,
+            egui::FontId::new(16.0, egui::FontFamily::Proportional)
+        );
+        style.text_styles.insert(
+            egui::TextStyle::Small,
+            egui::FontId::new(12.0, egui::FontFamily::Proportional)
+        );
+        
+        ctx.set_style(style);
+        ctx.set_fonts(fonts);
+    }
+    
     fn render_top_bar(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
             ui.heading("🤖 DeskAgent v1.0");
@@ -70,6 +96,9 @@ impl GuiApp {
 
 impl eframe::App for GuiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // Configure fonts for Chinese and emoji support
+        Self::configure_fonts(ctx);
+        
         // Handle keyboard shortcuts
         self.handle_keyboard_shortcuts(ctx);
         

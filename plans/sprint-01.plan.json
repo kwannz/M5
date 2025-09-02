@@ -1,7 +1,7 @@
 {
-  "plan_id": "b3f501bd-8f45-495a-9d31-7c980ca05bae",
-  "created_at": "2025-09-02T17:28:42.299544Z",
-  "sprint_file": "/var/folders/2y/vn8d3gqn62lbz5299k9ctxjh0000gn/T/.tmpB7QuBc/sprint1.md",
+  "plan_id": "5c8e13a3-ec34-43c5-90cf-7fd116b691cf",
+  "created_at": "2025-09-02T18:21:52.520934Z",
+  "sprint_file": "demo_sprint.md",
   "overview": "Fallback implementation plan based on content analysis",
   "tasks": [
     {

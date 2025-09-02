@@ -231,19 +231,80 @@ impl Default for AppSettings {
 
 impl AppState {
     pub async fn load_from_files() -> Result<Self> {
+        log::info!("📂 Loading application state from files...");
         let mut state = Self::default();
         
-        // Load dashboard data
-        if let Ok(progress_data) = fs::read_to_string("progress/sprint-01.progress.json").await {
-            state.load_progress_data(&progress_data)?;
+        // Load dashboard data with error recovery
+        match fs::read_to_string("progress/sprint-01.progress.json").await {
+            Ok(progress_data) => {
+                log::info!("📊 Loading progress data...");
+                match state.load_progress_data(&progress_data) {
+                    Ok(_) => log::info!("✅ Progress data loaded successfully"),
+                    Err(e) => {
+                        log::warn!("⚠️ Failed to parse progress data: {}, using defaults", e);
+                        // Continue with default state
+                    }
+                }
+            }
+            Err(e) => {
+                log::warn!("⚠️ Progress file not found: {}, using defaults", e);
+                // Continue with default state
+            }
         }
         
-        // Load review data
-        if let Ok(review_data) = fs::read_to_string("reviews/AI_REVIEW.md").await {
-            state.load_review_data(&review_data)?;
+        // Load review data with error recovery
+        match fs::read_to_string("reviews/AI_REVIEW.md").await {
+            Ok(review_data) => {
+                log::info!("📋 Loading review data...");
+                match state.load_review_data(&review_data) {
+                    Ok(_) => log::info!("✅ Review data loaded successfully"),
+                    Err(e) => {
+                        log::warn!("⚠️ Failed to parse review data: {}, using defaults", e);
+                        // Continue with default state
+                    }
+                }
+            }
+            Err(e) => {
+                log::warn!("⚠️ Review file not found: {}, using defaults", e);
+                // Continue with default state
+            }
         }
         
+        // Load additional files if they exist
+        state.load_additional_files().await;
+        
+        log::info!("✅ Application state loaded successfully");
         Ok(state)
+    }
+    
+    async fn load_additional_files(&mut self) {
+        // Load sprint state if available
+        if let Ok(sprint_data) = fs::read_to_string("plans/sprint-01.plan.json").await {
+            log::info!("📋 Loading sprint plan data...");
+            if let Err(e) = self.load_sprint_data(&sprint_data) {
+                log::warn!("⚠️ Failed to parse sprint data: {}", e);
+            }
+        }
+        
+        // Load status report if available
+        if let Ok(status_data) = fs::read_to_string("status/REPORT.md").await {
+            log::info!("📊 Loading status report...");
+            if let Err(e) = self.load_status_data(&status_data) {
+                log::warn!("⚠️ Failed to parse status data: {}", e);
+            }
+        }
+    }
+    
+    fn load_sprint_data(&mut self, _data: &str) -> Result<()> {
+        // Sprint data parsing logic would go here
+        // For now, just return success
+        Ok(())
+    }
+    
+    fn load_status_data(&mut self, _data: &str) -> Result<()> {
+        // Status data parsing logic would go here
+        // For now, just return success
+        Ok(())
     }
     
     fn load_progress_data(&mut self, data: &str) -> Result<()> {
