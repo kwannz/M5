@@ -1,0 +1,77 @@
+# DeskAgent Configuration
+app:
+  name: "DeskAgent"
+  version: "1.0.0"
+  log_level: "info"
+
+# Desktop Control Settings
+desktop:
+  platform: "macos"
+  cursor:
+    app_name: "Cursor"
+    timeout_ms: 5000
+    retry_attempts: 3
+  terminal:
+    app_name: "Terminal"
+    timeout_ms: 10000
+    retry_attempts: 3
+
+# LLM Router Configuration
+llm:
+  default_provider: "claude"
+  timeout_ms: 30000
+  max_retries: 3
+  
+  providers:
+    claude:
+      api_key: "${ANTHROPIC_API_KEY}"
+      base_url: "https://api.anthropic.com/v1"
+      model: "claude-3-5-sonnet-20241022"
+      max_tokens: 4096
+    
+    openrouter:
+      api_key: "${OPENROUTER_API_KEY}" 
+      base_url: "https://openrouter.ai/api/v1"
+      model: "anthropic/claude-3.5-sonnet"
+      max_tokens: 4096
+
+  # Task type to model mapping
+  routing:
+    PLAN:
+      provider: "claude"
+      temperature: 0.3
+    REVIEW:
+      provider: "claude"
+      temperature: 0.1
+    STATUS:
+      provider: "openrouter"
+      temperature: 0.0
+    FOLLOWUP:
+      provider: "claude"
+      temperature: 0.2
+    APPLY:
+      provider: "claude"
+      temperature: 0.0
+
+# Directory paths for artifacts
+paths:
+  plans: "plans"
+  reviews: "reviews"
+  runs: "runs"
+  status: "status"
+  progress: "progress"
+  routing: "routing"
+  tests: "tests"
+
+# TUI Settings
+tui:
+  refresh_rate_ms: 100
+  keybindings:
+    plan: "p"
+    review: "r"
+    status: "s"
+    followup: "f"
+    apply: "a"
+    quit: "q"
+    confirm: "y"
+    cancel: "n"
