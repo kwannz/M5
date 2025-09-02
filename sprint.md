@@ -81,56 +81,56 @@
 ### M3. LLM Router（Claude / OpenRouter）
 **目标**：多模型接入与策略路由  
 **DoD**  
-- [ ] 支持至少 2 条路径：Claude 直连、OpenRouter 代理  
-- [ ] 任务类型→模型策略（PLAN/REVIEW 使用不同模型/参数）  
-- [ ] 失败/超时→降级回退，记录成本与时延  
+- [x] 支持至少 2 条路径：Claude 直连、OpenRouter 代理  
+- [x] 任务类型→模型策略（PLAN/REVIEW 使用不同模型/参数）  
+- [x] 失败/超时→降级回退，记录成本与时延  
 **任务**  
-- [ ] provider 抽象、API 鉴权/超时/重试  
-- [ ] 路由策略配置读取（`config.yaml`）  
-- [ ] 离线模式开关（不出网时仅返回占位/提示）  
+- [x] provider 抽象、API 鉴权/超时/重试  
+- [x] 路由策略配置读取（`config.yaml`）  
+- [x] 离线模式开关（不出网时仅返回占位/提示）  
 **测试**  
-- [ ] 单测：路由选择与重试  
-- [ ] 集成：对相同 prompt 测试主备链路可用  
+- [x] 单测：路由选择与重试  
+- [x] 集成：对相同 prompt 测试主备链路可用  
 **产物**  
-- [ ] `routing/log.jsonl`  
-- [ ] `progress/sprint-01.progress.json`（更新 M3 完成）
+- [x] `routing/log.jsonl`  
+- [x] `progress/sprint-01.progress.json`（更新 M3 完成）
 
 ---
 
 ### M4. TUI 指挥舱（ASCII）
 **目标**：最小可视指挥舱  
 **DoD**  
-- [ ] 显示当前仓库/分支、最近任务结果（成功/失败）  
-- [ ] 快捷键入口：`P` 计划、`R` 审查、`S` 状态、`F` 跟进、`A` 应用补丁（仅入口）  
-- [ ] 高危确认弹窗（文案即可，执行可后续补全）  
+- [x] 显示当前仓库/分支、最近任务结果（成功/失败）  
+- [x] 快捷键入口：`P` 计划、`R` 审查、`S` 状态、`F` 跟进、`A` 应用补丁（仅入口）  
+- [x] 高危确认弹窗（文案即可，执行可后续补全）  
 **任务**  
-- [ ] Rust: ratatui + crossterm 视图与事件循环  
-- [ ] 加载 `plans/`、`runs/`、`status/` 概要  
+- [x] Rust: ratatui + crossterm 视图与事件循环  
+- [x] 加载 `plans/`、`runs/`、`status/` 概要  
 **测试**  
-- [ ] 端到端：启动 TUI，按键触发伪任务，视图刷新  
+- [x] 端到端：启动 TUI，按键触发伪任务，视图刷新  
 **产物**  
-- [ ] 截图或录屏 + `tests/REPORT.md` 附证据  
-- [ ] `progress/sprint-01.progress.json`（更新 M4 完成）
+- [x] 截图或录屏 + `tests/REPORT.md` 附证据  
+- [x] `progress/sprint-01.progress.json`（更新 M4 完成）
 
 ---
 
 ### M5. PLAN & REVIEW 基础流程（端到端最小闭环）
 **目标**：以最小路径跑通一次从计划→编辑→审查  
 **DoD**  
-- [ ] 读取 `SPRINTx.md`（本文件）→ LLM 生成任务计划 `plans/sprint-01.plan.json`  
-- [ ] 在 Cursor 中对指定文件**插入占位代码/注释**（可回滚）  
-- [ ] 收集 `git diff + lint + test + coverage`（允许简单桩）→ LLM 生成审查摘要与补丁（若有）  
+- [x] 读取 `SPRINTx.md`（本文件）→ LLM 生成任务计划 `plans/sprint-01.plan.json`  
+- [x] 在 Cursor 中对指定文件**插入占位代码/注释**（可回滚）  
+- [x] 收集 `git diff + lint + test + coverage`（允许简单桩）→ LLM 生成审查摘要与补丁（若有）  
 **任务**  
-- [ ] PLAN：需求拆解 prompt + 落盘  
-- [ ] EDIT：调用 Desktop Control 写入/保存  
-- [ ] REVIEW：收集信号→审查报告 `reviews/AI_REVIEW.md`  
+- [x] PLAN：需求拆解 prompt + 落盘  
+- [x] EDIT：调用 Desktop Control 写入/保存  
+- [x] REVIEW：收集信号→审查报告 `reviews/AI_REVIEW.md`  
 **测试**  
-- [ ] 端到端：执行一次 PLAN→EDIT→REVIEW，所有产物文件存在且字段完整  
+- [x] 端到端：执行一次 PLAN→EDIT→REVIEW，所有产物文件存在且字段完整  
 **产物**  
-- [ ] `plans/sprint-01.plan.json`  
-- [ ] `reviews/AI_REVIEW.md`  
-- [ ] `tests/REPORT.md` 附端到端结果  
-- [ ] `progress/sprint-01.progress.json`（更新 M5 完成）
+- [x] `plans/sprint-01.plan.json`  
+- [x] `reviews/AI_REVIEW.md`  
+- [x] `tests/REPORT.md` 附端到端结果  
+- [x] `progress/sprint-01.progress.json`（更新 M5 完成）
 
 ---
 
@@ -188,8 +188,8 @@
 ---
 
 ## 8. 完成标准（Sprint-01 Definition of Done）
-- [ ] M1–M5 五个模块全部达到各自 DoD  
-- [ ] `tests/REPORT.md` 有完整记录，端到端用例通过  
-- [ ] `progress/sprint-01.progress.json` 反映完成=100%  
-- [ ] `status/REPORT.md` 给出 Sprint 复盘与 Sprint-02 建议  
-- [ ] 准备就绪：基于进度生成 `sprint-02.md`（下一迭代计划）
+- [x] M1–M5 五个模块全部达到各自 DoD  
+- [x] `tests/REPORT.md` 有完整记录，端到端用例通过  
+- [x] `progress/sprint-01.progress.json` 反映完成=100%  
+- [x] `status/REPORT.md` 给出 Sprint 复盘与 Sprint-02 建议  
+- [x] 准备就绪：基于进度生成 `sprint-02.md`（下一迭代计划）

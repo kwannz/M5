@@ -190,29 +190,20 @@ impl WorkflowManager {
     }
 }
 
-impl Default for WorkflowManager {
-    fn default() -> Self {
-        // This is a placeholder implementation for testing
-        // In production, proper instances should be passed via new()
+impl WorkflowManager {
+    /// Create a new WorkflowManager instance for testing
+    pub async fn new_for_testing() -> Result<Self> {
         use crate::orchestrator::OrchestratorConfig;
-        use std::sync::Arc;
-        use tokio::runtime::Handle;
 
-        // Create minimal instances for testing
         let config = OrchestratorConfig::default();
-        let orchestrator = Handle::current().block_on(async {
-            Orchestrator::new(config).await.unwrap()
-        });
+        let orchestrator = Orchestrator::new(config).await?;
         
         let cursor = CursorController::new();
         let terminal = TerminalController::new();
         
-        // Create a basic LlmConfig for testing
         let llm_config = crate::llm::LlmConfig::default();
-        let llm = Handle::current().block_on(async {
-            LlmRouter::new(llm_config, "logs").await.unwrap()
-        });
+        let llm = LlmRouter::new(llm_config, "logs").await?;
         
-        Self::new(orchestrator, cursor, terminal, llm, PathBuf::from("."))
+        Ok(Self::new(orchestrator, cursor, terminal, llm, PathBuf::from(".")))
     }
 }

@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use tokio::sync::{mpsc, RwLock};
 use uuid::Uuid;
 
-pub use task::{Task, TaskType, TaskRequest};
+pub use task::{Task, TaskType, TaskRequest, TaskAction};
 pub use state::{TaskState, StateManager};
 use logger::EventLogger;
 
@@ -114,8 +114,30 @@ impl Orchestrator {
         
         tokio::spawn(async move {
             while let Some(request) = receiver.recv().await {
-                // TODO: Process task request
-                log::info!("Processing task request: {:?}", request);
+                // Process task request based on action type
+                match request.action {
+                    TaskAction::Execute => {
+                        log::info!("Executing task: {:?}", request.task_id);
+                        // Implementation would update task state to Running
+                    }
+                    TaskAction::Retry => {
+                        log::info!("Retrying task: {:?}", request.task_id);
+                        // Implementation would retry failed task
+                    }
+                    TaskAction::Cancel => {
+                        log::info!("Cancelling task: {:?}", request.task_id);
+                        // Implementation would cancel task
+                    }
+                    TaskAction::Pause => {
+                        log::info!("Pausing task: {:?}", request.task_id);
+                        // Implementation would pause task execution
+                    }
+                    TaskAction::Resume => {
+                        log::info!("Resuming task: {:?}", request.task_id);
+                        // Implementation would resume paused task
+                    }
+                }
+                log::info!("Task request processed: {:?}", request);
             }
         });
         

@@ -1,5 +1,3 @@
-use anyhow::Result;
-use chrono::Utc;
 use deskagent::{
     orchestrator::{Orchestrator, OrchestratorConfig},
     desktop::{CursorController, TerminalController},
@@ -7,7 +5,6 @@ use deskagent::{
     workflows::{WorkflowManager, WorkflowType, WorkflowStatus, PlanWorkflow, EditWorkflow, ReviewWorkflow},
 };
 use std::path::PathBuf;
-use std::sync::Arc;
 use tempfile::TempDir;
 use tokio::fs;
 
@@ -277,7 +274,7 @@ async fn test_workflow_result_serialization() {
     let deserialized = serde_json::from_str(&serialized.unwrap());
     assert!(deserialized.is_ok());
     
-    let deserialized_result: crate::workflows::WorkflowResult = deserialized.unwrap();
+    let deserialized_result: deskagent::workflows::WorkflowResult = deserialized.unwrap();
     assert_eq!(deserialized_result.workflow_type, result.workflow_type);
     assert_eq!(deserialized_result.workflow_id, result.workflow_id);
 }
@@ -436,7 +433,7 @@ edition = "2021"
 /// Test workflow manager default constructor for testing
 #[tokio::test]
 async fn test_workflow_manager_default() {
-    let manager = WorkflowManager::default();
+    let manager = WorkflowManager::new_for_testing().await.unwrap();
     
     // Should be able to create default instance
     assert_eq!(manager.get_base_path(), &PathBuf::from("."));
@@ -474,7 +471,7 @@ async fn test_concurrent_workflow_safety() {
     let handle1 = tokio::spawn({
         let sprint1 = sprint1.clone();
         async move {
-            let manager = WorkflowManager::default();
+            let manager = WorkflowManager::new_for_testing().await.unwrap();
             let mut manager = manager; // Make mutable for the method call
             manager.execute_plan_workflow(sprint1).await
         }
@@ -490,8 +487,8 @@ async fn test_concurrent_workflow_safety() {
     assert!(result1.is_ok());
     assert!(result2.is_ok());
     
-    let workflow1 = result1.unwrap();
-    let workflow2 = result2.unwrap();
+    let workflow1 = result1.unwrap().unwrap();
+    let workflow2 = result2.unwrap().unwrap();
     
     assert!(workflow1.workflow_id != workflow2.workflow_id);
 }

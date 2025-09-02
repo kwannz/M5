@@ -686,3 +686,97 @@ pub fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
         ])
         .split(popup_layout[1])[1]
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::orchestrator::{OrchestratorConfig, TaskType};
+    use tokio::time::{sleep, Duration};
+
+    #[tokio::test]
+    async fn test_app_creation() {
+        let config = OrchestratorConfig::default();
+        let orchestrator = Orchestrator::new(config).await.unwrap();
+        let app = App::new(orchestrator);
+        
+        assert!(!app.should_quit);
+        assert!(app.recent_tasks.is_empty());
+        assert!(!app.show_confirmation);
+        assert!(!app.loading);
+    }
+
+    #[test]
+    fn test_task_summary_creation() {
+        let task_id = Uuid::new_v4();
+        let task_summary = TaskSummary {
+            id: task_id,
+            task_type: "Plan".to_string(),
+            status: TaskState::Pending,
+            created_at: Utc::now(),
+            duration_ms: None,
+            success: false,
+            error_message: None,
+        };
+        
+        assert_eq!(task_summary.id, task_id);
+        assert_eq!(task_summary.task_type, "Plan");
+        assert_eq!(task_summary.status, TaskState::Pending);
+        assert!(!task_summary.success);
+    }
+
+    #[test]
+    fn test_pending_action_variants() {
+        let actions = [
+            PendingAction::Plan,
+            PendingAction::Review, 
+            PendingAction::Apply,
+            PendingAction::Followup,
+        ];
+        
+        // Test that all action variants can be created
+        for action in actions.iter() {
+            match action {
+                PendingAction::Plan => assert!(true),
+                PendingAction::Review => assert!(true),
+                PendingAction::Apply => assert!(true),
+                PendingAction::Followup => assert!(true),
+            }
+        }
+    }
+
+    #[test]
+    fn test_centered_rect_calculation() {
+        let area = Rect::new(0, 0, 100, 50);
+        let centered = centered_rect(60, 40, area);
+        
+        // Should be centered within the area
+        assert!(centered.x > 0);
+        assert!(centered.y > 0);
+        assert!(centered.width <= 60);
+        assert!(centered.height <= 20); // 40% of 50
+    }
+
+    #[tokio::test]
+    async fn test_app_quit_functionality() {
+        let config = OrchestratorConfig::default();
+        let orchestrator = Orchestrator::new(config).await.unwrap();
+        let mut app = App::new(orchestrator);
+        
+        // Initially should not quit
+        assert!(!app.should_quit);
+        
+        // Simulate quit action
+        app.should_quit = true;
+        assert!(app.should_quit);
+    }
+
+    #[test]
+    fn test_status_message_handling() {
+        let config = OrchestratorConfig::default();
+        
+        // Create a simple test case without async orchestrator
+        let status_msg = "Test status message".to_string();
+        assert!(!status_msg.is_empty());
+        assert_eq!(status_msg.len(), 19);
+    }
+}

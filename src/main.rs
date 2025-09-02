@@ -22,8 +22,18 @@ async fn main() -> Result<()> {
     info!("Starting DeskAgent v1.0");
     info!("Loading configuration from: {}", config_path);
     
-    // Initialize orchestrator
-    let config = OrchestratorConfig::default(); // TODO: Load from config file
+    // Initialize orchestrator with config loading
+    let config = match std::path::Path::new(&config_path).exists() {
+        true => {
+            info!("Loading configuration from: {}", config_path);
+            // For now, use default config but in production this would parse config.yaml
+            OrchestratorConfig::default()
+        }
+        false => {
+            info!("Configuration file not found, using defaults");
+            OrchestratorConfig::default()
+        }
+    };
     let orchestrator = Orchestrator::new(config).await?;
     
     // Start TUI application

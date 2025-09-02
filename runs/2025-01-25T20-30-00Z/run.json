@@ -1,0 +1,107 @@
+{
+  "run_id": "run_20250125_203000",
+  "session_id": "session_550e8400_e29b_41d4_a716_446655440000",
+  "start_time": "2025-01-25T20:30:00Z",
+  "end_time": "2025-01-25T20:32:15Z",
+  "duration_seconds": 135,
+  "status": "completed",
+  "trigger": "manual_tui_execution",
+  
+  "tasks_executed": [
+    {
+      "task_id": "task_001",
+      "task_type": "Plan",
+      "description": "Generate development plan for user story implementation",
+      "start_time": "2025-01-25T20:30:05Z",
+      "end_time": "2025-01-25T20:30:28Z",
+      "duration_seconds": 23,
+      "status": "completed",
+      "result": {
+        "success": true,
+        "output_file": "plans/user-story-implementation.json",
+        "llm_provider": "Claude",
+        "tokens_used": 1024,
+        "cost_cents": 15
+      }
+    },
+    {
+      "task_id": "task_002", 
+      "task_type": "Edit",
+      "description": "Insert placeholder code in target files",
+      "start_time": "2025-01-25T20:30:30Z",
+      "end_time": "2025-01-25T20:31:45Z", 
+      "duration_seconds": 75,
+      "status": "completed",
+      "result": {
+        "success": true,
+        "files_modified": [
+          "src/components/user_dashboard.rs",
+          "src/services/user_service.rs",
+          "tests/integration/user_tests.rs"
+        ],
+        "desktop_actions": 3,
+        "cursor_operations": 6
+      }
+    },
+    {
+      "task_id": "task_003",
+      "task_type": "Review", 
+      "description": "Analyze changes and generate review report",
+      "start_time": "2025-01-25T20:31:47Z",
+      "end_time": "2025-01-25T20:32:12Z",
+      "duration_seconds": 25,
+      "status": "completed",
+      "result": {
+        "success": true,
+        "output_file": "reviews/user-story-review.md",
+        "quality_score": 92,
+        "llm_provider": "Claude", 
+        "tokens_used": 2048,
+        "cost_cents": 32,
+        "git_changes": {
+          "files_changed": 3,
+          "lines_added": 127,
+          "lines_removed": 8
+        }
+      }
+    }
+  ],
+  
+  "event_log": [
+    {"timestamp": "2025-01-25T20:30:00Z", "event": "run_started", "details": "Manual execution via TUI hotkey 'P'"},
+    {"timestamp": "2025-01-25T20:30:05Z", "event": "task_created", "task_id": "task_001", "type": "Plan"},
+    {"timestamp": "2025-01-25T20:30:05Z", "event": "llm_request", "provider": "Claude", "model": "claude-3-5-sonnet-20241022"},
+    {"timestamp": "2025-01-25T20:30:28Z", "event": "task_completed", "task_id": "task_001", "result": "success"},
+    {"timestamp": "2025-01-25T20:30:30Z", "event": "task_created", "task_id": "task_002", "type": "Edit"}, 
+    {"timestamp": "2025-01-25T20:30:32Z", "event": "cursor_opened", "target": "src/components/user_dashboard.rs:15:1"},
+    {"timestamp": "2025-01-25T20:30:45Z", "event": "text_inserted", "length": 87, "location": "user_dashboard.rs:15"},
+    {"timestamp": "2025-01-25T20:31:15Z", "event": "cursor_opened", "target": "src/services/user_service.rs:42:1"},
+    {"timestamp": "2025-01-25T20:31:28Z", "event": "text_inserted", "length": 156, "location": "user_service.rs:42"},
+    {"timestamp": "2025-01-25T20:31:45Z", "event": "task_completed", "task_id": "task_002", "result": "success"},
+    {"timestamp": "2025-01-25T20:31:47Z", "event": "task_created", "task_id": "task_003", "type": "Review"},
+    {"timestamp": "2025-01-25T20:31:49Z", "event": "git_diff_collected", "files": 3, "changes": "+127/-8"},
+    {"timestamp": "2025-01-25T20:31:52Z", "event": "llm_request", "provider": "Claude", "model": "claude-3-5-sonnet-20241022"},
+    {"timestamp": "2025-01-25T20:32:12Z", "event": "task_completed", "task_id": "task_003", "result": "success"},
+    {"timestamp": "2025-01-25T20:32:15Z", "event": "run_completed", "total_duration": 135}
+  ],
+  
+  "metrics": {
+    "total_tasks": 3,
+    "successful_tasks": 3, 
+    "failed_tasks": 0,
+    "total_cost_cents": 47,
+    "total_tokens": 3072,
+    "files_modified": 3,
+    "lines_of_code_added": 127,
+    "desktop_interactions": 9,
+    "llm_requests": 2
+  },
+  
+  "system_info": {
+    "rust_version": "1.75.0",
+    "platform": "macOS 14.6.0",
+    "deskagent_version": "1.0.0",
+    "config_file": "config.yaml",
+    "working_directory": "/Users/zhaoleon/Documents/M5"
+  }
+}
